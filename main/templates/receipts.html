@@ -1,9 +1,26 @@
 {% extends "main/index.html" %}
 
 {% load bootstrap4 %}
+{% load static %}
 
 {% block title %}Личный кабинет{% endblock %}
 
 {% block content %}
-    <h2>Привет все чеки</h2>
+    <section class="receipts">
+        <div class="top_receipts">
+            <h2>История чеков</h2>
+            <p>Чеков внесено : {{ receipts.count }} шт</p>
+        </div>
+        <div class="main_receipts">
+            {% if receipts.count <= 0 %}
+                <img src="{% static 'img/Квитанция_с_вопросительными_знаками_1.png' %}" alt="Квитанция_с_вопросительными_знаками_1">
+                <H2>Здесь будет история ваших чеков</H2>
+                <p>Вы не добавили еще ни одного чека</p>
+                <a class="button_create_receipt" href=""><img src="{% static 'img/receipt-text.png' %}" alt="receipt-text">Зарегистрировать чек</a>
+            {% else %}
+                <H2>Что-то</H2>
+            {% endif %}
+        </div>
+    </section>
+
 {% endblock %}

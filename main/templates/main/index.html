@@ -12,16 +12,21 @@
 </head>
 <body>
     <header class="header">
-    <a href="{% url 'main:index'  %}">На сайт</a>
+    <a href="{% url 'main:index'  %}"><img src="{% static 'img/arrow-left.png' %}" alt="arrow-left">На сайт</a>
    {% if user.is_authenticated %}
        <div class="header_block">
-           <a href="{% url 'main:receipts' %}">Личный кабинет</a>
-           <a href="{% url 'main:rules' %}">Правила</a>
-           <a href="{% url 'main:profile' %}">Профиль</a>
+           <a href="{% url 'main:receipts' %}"><img src="{% static 'img/home.png' %}" alt="home">Личный кабинет</a>
+           <a href="{% url 'main:rules' %}"><img src="{% static 'img/Help_Question.png' %}" alt="Help_Question">Правила</a>
+           <a href="{% url 'main:profile' %}"><img src="{% static 'img/User.png' %}" alt="User">Профиль</a>
        </div>
 
        <div class="avatar">
-           <img src="" alt="">
+            <a href="#"><img src="{% static 'img/Huge-icon.png' %}" alt="Huge-icon"></a>
+            {% if user.profile.avatar %}
+                <a href="{% url 'main:profile' %}{% url 'main:profile' %}"><img class="avatar_image" src="{{ user.profile.avatar.url }}" alt="Аватар"></a>
+            {% else %}
+                <a href="{% url 'main:profile' %}"><img class="avatar_image" src="{% static 'img/default-avatar.png' %}" alt="Аватар по умолчанию"></a>
+            {% endif %}
             <div>
                 <p>{{ user.username }}</p>
                 <p>{{ user.email }}</p>
@@ -36,30 +41,9 @@
    {% endif %}
     </header>
     <main>
-    <div style="width: 80%;margin-left: 80px; padding-top: 40px">
+    <div>
        {% bootstrap_messages %}
        {% block content %}
-           <p style="color: white">Количество заявок в статусе "Принята в работу": {{ num_status }}</p><br>
-            <div class="slider-container" style="display: flex; gap: 50px">
-                <div class="slider" style="display: flex; gap: 50px">
-                    {% for design in designs %}
-                        <div class="slide" style="border: 2px white solid; width: 350px; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px">
-                            <h2 style="color: white">Пользователь: {{ design.user }}</h2>
-                            <strong style="color: white">Название заявки: {{ design.name }}</strong>
-                            <p style="color: white">Статус: {{ design.get_status_display }}</p>
-                            <p style="color: white">Создана: {{ design.created_at }}</p>
-                            <img src="{{ design.image.url }}" alt="{{ design.name }}" width="300" height="250px">
-                            <strong style="color: white">Описание</strong>
-                            <p style="color: white">{{ design.description }}</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="buttonslider">
-               <button class="prev-button" type="button" aria-label="Посмотреть предыдущий слайд">&lt;</button>
-               <button class="next-button" type="button" aria-label="Посмотреть следующий слайд">&gt;</button>
-           </div>
-           <script src="{% static 'js/slider.js' %}"></script>
        {% endblock %}
     </div>
 

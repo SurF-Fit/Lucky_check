@@ -43,3 +43,14 @@ class Receipt(models.Model):
 
         def _str_(self):
             return f"Чек {self.fn}-{self.fd}-{self.fp} ({self.get_status_display()})"
+
+class Profile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="profile",
+    )
+    avatar = models.ImageField(upload_to="avatars/", null=True, blank=True)
+
+    def __str__(self):
+        return f"Профиль {self.user.username}"
