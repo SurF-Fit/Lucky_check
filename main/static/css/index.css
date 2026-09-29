@@ -1,0 +1,43 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30vw;
+    background: rgba(255, 255, 255, 1);
+    height: 5vw;
+}
+
+.header a {
+    height: max-content;
+    width: max-content;
+}
+
+.header_block {
+    display: flex;
+    gap: 5vw;
+    height: max-content;
+}
+
+.avatar {
+    display: flex;
+}
+
+.avatar p {
+    margin-bottom: 0;
+}
+
+.avatar > div {
+    display: flex;
+    flex-direction: column;
+}
+
+main{
+    background: rgba(245, 247, 250, 1);
+    height: max-content;
+}

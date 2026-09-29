@@ -1,0 +1,70 @@
+{% load static %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='slim' %}
+   <title>{% block title %} Главная {% endblock %} </title>
+</head>
+<body>
+    <header class="header">
+    <a href="{% url 'main:index'  %}">На сайт</a>
+   {% if user.is_authenticated %}
+       <div class="header_block">
+           <a href="{% url 'main:receipts' %}">Личный кабинет</a>
+           <a href="{% url 'main:rules' %}">Правила</a>
+           <a href="{% url 'main:profile' %}">Профиль</a>
+       </div>
+
+       <div class="avatar">
+           <img src="" alt="">
+            <div>
+                <p>{{ user.username }}</p>
+                <p>{{ user.email }}</p>
+                <form action="{% url 'main:logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                </form>
+            </div>
+       </div>
+       {% else %}
+       <a href="{% url 'main:login' %}">Войти</a>
+   {% endif %}
+    </header>
+    <main>
+    <div style="width: 80%;margin-left: 80px; padding-top: 40px">
+       {% bootstrap_messages %}
+       {% block content %}
+           <p style="color: white">Количество заявок в статусе "Принята в работу": {{ num_status }}</p><br>
+            <div class="slider-container" style="display: flex; gap: 50px">
+                <div class="slider" style="display: flex; gap: 50px">
+                    {% for design in designs %}
+                        <div class="slide" style="border: 2px white solid; width: 350px; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px">
+                            <h2 style="color: white">Пользователь: {{ design.user }}</h2>
+                            <strong style="color: white">Название заявки: {{ design.name }}</strong>
+                            <p style="color: white">Статус: {{ design.get_status_display }}</p>
+                            <p style="color: white">Создана: {{ design.created_at }}</p>
+                            <img src="{{ design.image.url }}" alt="{{ design.name }}" width="300" height="250px">
+                            <strong style="color: white">Описание</strong>
+                            <p style="color: white">{{ design.description }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="buttonslider">
+               <button class="prev-button" type="button" aria-label="Посмотреть предыдущий слайд">&lt;</button>
+               <button class="next-button" type="button" aria-label="Посмотреть следующий слайд">&gt;</button>
+           </div>
+           <script src="{% static 'js/slider.js' %}"></script>
+       {% endblock %}
+    </div>
+
+    </main>
+
+</body>
+</html>
+

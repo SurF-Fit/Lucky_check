@@ -1,0 +1,10 @@
+{% extends "main/index.html" %}
+
+{% load bootstrap4 %}
+
+{% block title %}Выход{% endblock %}
+
+{% block content %}
+  <h1>Вы вышли</h1>
+  <a href="{% url 'login' %}">Войти заново</a>
+{% endblock %}
