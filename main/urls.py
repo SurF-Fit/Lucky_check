@@ -12,4 +12,5 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("receipts/", views.receipts, name="receipts"),
     path("rules/", views.rules, name="rules"),
+    path('api/receipts/', views.api_receipts, name='api_receipts'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

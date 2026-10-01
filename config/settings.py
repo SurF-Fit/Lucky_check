@@ -127,8 +127,11 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-PROMO_START = "/accounts/login/"
-LOGIN_REDIRECT_URL = "/profile"
+PROMO_START = os.getenv("PROMO_START")
+PROMO_END = os.getenv("PROMO_END")
+
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/profile/"
 LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 MEDIA_URL = '/media/'

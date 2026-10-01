@@ -12,43 +12,101 @@
 </head>
 <body>
     <header class="header">
-    <a href="{% url 'main:index'  %}"><img src="{% static 'img/arrow-left.png' %}" alt="arrow-left">На сайт</a>
-   {% if user.is_authenticated %}
-       <div class="header_block">
-           <a href="{% url 'main:receipts' %}"><img src="{% static 'img/home.png' %}" alt="home">Личный кабинет</a>
-           <a href="{% url 'main:rules' %}"><img src="{% static 'img/Help_Question.png' %}" alt="Help_Question">Правила</a>
-           <a href="{% url 'main:profile' %}"><img src="{% static 'img/User.png' %}" alt="User">Профиль</a>
-       </div>
+        {% if user.is_authenticated %}
+            <a href="{% url 'main:index' %}" class="header__logo">
+                <img src="{% static 'img/arrow-left.png' %}" alt="arrow-left">На сайт
+            </a>
 
-       <div class="avatar">
-            <a href="#"><img src="{% static 'img/Huge-icon.png' %}" alt="Huge-icon"></a>
-            {% if user.profile.avatar %}
-                <a href="{% url 'main:profile' %}{% url 'main:profile' %}"><img class="avatar_image" src="{{ user.profile.avatar.url }}" alt="Аватар"></a>
-            {% else %}
-                <a href="{% url 'main:profile' %}"><img class="avatar_image" src="{% static 'img/default-avatar.png' %}" alt="Аватар по умолчанию"></a>
-            {% endif %}
-            <div>
-                <p>{{ user.username }}</p>
-                <p>{{ user.email }}</p>
-                <form action="{% url 'main:logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Выйти</button>
-                </form>
+            <button class="header__burger" type="button" aria-label="Меню" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="header__nav" id="headerNav">
+                <div class="header_block">
+                    <a href="{% url 'main:receipts' %}">
+                        <img src="{% static 'img/home.png' %}" alt="home">Личный кабинет
+                    </a>
+                    <a href="{% url 'main:rules' %}">
+                        <img src="{% static 'img/Help_Question.png' %}" alt="Help_Question">Правила
+                    </a>
+                    <a href="{% url 'main:profile' %}">
+                        <img src="{% static 'img/User.png' %}" alt="User">Профиль
+                    </a>
+                </div>
+
+                <div class="avatar">
+                    <a href="#"><img src="{% static 'img/Huge-icon.png' %}" alt="Huge-icon"></a>
+                    {% if user.profile.avatar %}
+                        <a href="{% url 'main:profile' %}">
+                            <img class="avatar_image" src="{{ user.profile.avatar.url }}" alt="Аватар">
+                        </a>
+                    {% else %}
+                        <a href="{% url 'main:profile' %}">
+                            <img class="avatar_image" src="{% static 'img/default-avatar.png' %}" alt="Аватар по умолчанию">
+                        </a>
+                    {% endif %}
+                    <div class="avatar__info">
+                        <p>{{ user.username }}</p>
+                        <p>{{ user.email }}</p>
+                        <form action="{% url 'main:logout' %}" method="post">
+                            {% csrf_token %}
+                            <button class="button_logout" type="submit">Выйти</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-       </div>
-       {% else %}
-       <a href="{% url 'main:login' %}">Войти</a>
-   {% endif %}
+        {% else %}
+            <a href="{% url 'main:login' %}">Войти</a>
+        {% endif %}
     </header>
     <main>
-    <div>
-       {% bootstrap_messages %}
-       {% block content %}
-       {% endblock %}
-    </div>
+        {% block content %}
+        <section class="hero">
+            <h1 class="hero__title">Чек на удачу</h1>
+            <p class="hero__subtitle">
+                Регистрируйте чеки и участвуйте в акции
+            </p>
 
+            {% if promo_start and promo_end %}
+                <p class="hero__period">
+                    Период акции:
+                    <strong>{{ promo_start|date:"d.m.Y" }}</strong> —
+                    <strong>{{ promo_end|date:"d.m.Y" }}</strong>
+                </p>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <div class="hero__actions">
+                    <a href="{% url 'main:receipt_create' %}" class="btn btn--primary">Зарегистрировать чек</a>
+                    <a href="{% url 'main:receipts' %}" class="btn">Мои чеки</a>
+                </div>
+            {% else %}
+                <div class="hero__actions">
+                    <a href="{% url 'login' %}" class="btn btn--primary">Войти</a>
+                    <a href="{% url 'main:rules' %}" class="btn">Правила акции</a>
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="features">
+            <div class="feature">
+                <h3>Просто</h3>
+                <p>Заполните ФН, ФД, ФП, дату покупки и сумму чека — форма подскажет, если что-то не так.</p>
+            </div>
+            <div class="feature">
+                <h3>Прозрачно</h3>
+                <p>Статус чека виден в личном кабинете: на проверке, принят или отклонён с причиной.</p>
+            </div>
+            <div class="feature">
+                <h3>Честно</h3>
+                <p>Один чек — одна регистрация. Повторная отправка того же чека не принимается.</p>
+            </div>
+        </section>
+        {% endblock %}
     </main>
-
+    <script src="{% static 'js/header.js' %}"></script>
 </body>
 </html>
 

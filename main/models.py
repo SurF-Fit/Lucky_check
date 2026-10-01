@@ -1,5 +1,3 @@
-from dataclasses import field
-
 from django.conf import settings
 from django.db import models
 
@@ -12,7 +10,7 @@ class Receipt(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete = models.CASCADE,
-        related_name = "main",
+        related_name = "receipts",
         verbose_name = "Пользователь",
     )
     fn = models.CharField("ФН", max_length=20)
@@ -35,14 +33,14 @@ class Receipt(models.Model):
         verbose_name_plural = "Чеки"
         ordering = ["-purchased_at"]
         constraints = [
-            models.UniqueConstraint (
-                fields=['fn', "fd", "fp"],
+            models.UniqueConstraint(
+                fields=['fn', 'fd', 'fp'],
                 name="unique_receipt_fn_fd_fp",
             )
         ]
 
-        def _str_(self):
-            return f"Чек {self.fn}-{self.fd}-{self.fp} ({self.get_status_display()})"
+    def __str__(self):
+        return f"Чек {self.fn}-{self.fd}-{self.fp} ({self.get_status_display()})"
 
 class Profile(models.Model):
     user = models.OneToOneField(
